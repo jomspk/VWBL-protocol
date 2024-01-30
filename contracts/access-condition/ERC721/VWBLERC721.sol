@@ -8,25 +8,16 @@ import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
 import "./IAccessControlCheckerByNFT.sol";
 import "../AbstractVWBLToken.sol";
-import "../AbstractVWBLToken.sol";
 
 /**
  * @dev NFT which is added Viewable features that only NFT Owner can view digital content
  */
 contract VWBLERC721 is Ownable, AbstractVWBLToken, ERC721Enumerable {
     constructor(
-        string memory _baseURI,
         address _gatewayProxy,
         address _accessCheckerContract,
         string memory _signMessage
-    ) ERC721("VWBL", "VWBL") AbstractVWBLToken(_baseURI, _gatewayProxy, _accessCheckerContract, _signMessage) {}
-
-    /**
-     * @notice BaseURI for computing {tokenURI}.
-     */
-    function _baseURI() internal view override returns (string memory) {
-        return baseURI;
-    }
+    ) ERC721("VWBL", "VWBL") AbstractVWBLToken(_gatewayProxy, _accessCheckerContract, _signMessage) {}
 
     /**
      * @notice Mint NFT, grant access feature and register access condition of digital content.

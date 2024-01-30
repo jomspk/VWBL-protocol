@@ -4,7 +4,6 @@ pragma solidity ^0.8.17;
 import "./AbstractVWBLSettings.sol";
 
 abstract contract AbstractVWBLToken is AbstractVWBLSettings {
-    string public baseURI;
     uint256 public counter = 0;
 
     struct TokenInfo {
@@ -16,21 +15,10 @@ abstract contract AbstractVWBLToken is AbstractVWBLSettings {
     mapping(uint256 => TokenInfo) public tokenIdToTokenInfo;
 
     constructor(
-        string memory _baseURI,
         address _gatewayProxy,
         address _accessCheckerContract,
         string memory _signMessage
-    ) AbstractVWBLSettings(_gatewayProxy, _accessCheckerContract, _signMessage) {
-        baseURI = _baseURI;
-    }
-
-    /**
-     * @notice Set BaseURI.
-     * @param _baseURI new BaseURI
-     */
-    function setBaseURI(string memory _baseURI) public onlyOwner {
-        baseURI = _baseURI;
-    }
+    ) AbstractVWBLSettings(_gatewayProxy, _accessCheckerContract, _signMessage) {}
 
     /**
      * @notice Get minter of NFT by tokenId
