@@ -53,7 +53,7 @@ contract VWBLERC721 is Ownable, AbstractVWBLToken, ERC721URIStorage {
      * @param _inputJson json data of diary NFT
      * @param _documentId The Identifier of digital content and decryption key
      */
-    function makeNFT(string memory _inputJson, bytes32 _documentId) public payable returns (uint256) {
+    function makeNFT(string memory _inputJson, bytes32 _documentId) public payable onlyOwner returns (uint256) {
         uint256 newItemId = _tokenIds.current();
 
         //引数からそのままjsonデータを取得するようにする
