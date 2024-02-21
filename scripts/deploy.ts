@@ -15,23 +15,20 @@ async function main() {
     // If this script is run directly using `node` you may want to call compile
     // manually to make sure everything is compiled
     // await hre.run('compile');
-    const baseURI = process.env.METADATA_URL!
-    console.log("VWBL Metadata URL: ", baseURI)
 
-    const gatewayProxyContractAddress = process.env.GATEWAY_PROXY_ADDRESS!;
-    const accessControlCheckerByNFTContractAddress = process.env.ACCESS_CONTROL_CHECKER_BY_NFT_ADDRESS!;
-    const messageToBeSigned = process.env.MESSAGE_TO_BE_SIGNED!;
-    console.log("Message to be signed: ", messageToBeSigned);
+    const gatewayProxyContractAddress = process.env.GATEWAY_PROXY_ADDRESS!
+    const accessControlCheckerByNFTContractAddress = process.env.ACCESS_CONTROL_CHECKER_BY_NFT_ADDRESS!
+    const messageToBeSigned = process.env.MESSAGE_TO_BE_SIGNED!
+    console.log("Message to be signed: ", messageToBeSigned)
 
-    let VWBLERC721Contract: Contract;
+    let VWBLERC721Contract: Contract
 
-    const vwblERC721 = await ethers.getContractFactory("VWBLERC721ERC2981")
+    const vwblERC721 = await ethers.getContractFactory("VWBLERC721")
     VWBLERC721Contract = await vwblERC721.deploy(
-        baseURI,
         gatewayProxyContractAddress,
         accessControlCheckerByNFTContractAddress,
         messageToBeSigned
-    );
+    )
 
     console.log("VWBLERC721 Contract deployed to:", VWBLERC721Contract.address)
 
@@ -49,7 +46,6 @@ async function main() {
     )
     console.log("VWBLERC721 Metadata Contract deployed to:", VWBLERC721MetadataContract.address)
     */
-
 }
 
 // We recommend this pattern to be able to use async/await everywhere
