@@ -29,8 +29,7 @@ async function main() {
         accessControlCheckerByNFTContractAddress,
         messageToBeSigned
     )
-
-    console.log("VWBLERC721 Contract deployed to:", VWBLERC721Contract.address)
+    console.log("VWBLERC721 Contract deployed to:", VWBLERC721Contract.target)
 
     /**
      * Below is deploy script of VWBLMetadata Contract.

@@ -9,7 +9,7 @@ import "../access-condition/AbstractControlChecker.sol";
 /**
  * @dev VWBL Gateway Contract which manage who has access right of digital content.
  */
-contract VWBLGateway is IVWBLGateway, Ownable {
+contract VWBLGateway is IVWBLGateway, Ownable(msg.sender) {
     mapping(bytes32 => address) public documentIdToConditionContract;
     mapping(bytes32 => address) public documentIdToMinter;
     mapping(bytes32 => mapping(address => bool)) public paidUsers;

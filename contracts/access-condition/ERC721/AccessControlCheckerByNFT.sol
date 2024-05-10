@@ -15,7 +15,7 @@ import "../IVWBL.sol";
  * @dev VWBL's access condition contract which is defined by NFT Owner has access right of digital content
  *      and NFT Minter is digital contract creator(decryption key creator)
  */
-contract AccessControlCheckerByNFT is AbstractControlChecker, Ownable {
+contract AccessControlCheckerByNFT is AbstractControlChecker, Ownable(msg.sender) {
     address public gatewayProxy;
 
     event nftDataRegistered(address contractAddress, uint256 tokenId);

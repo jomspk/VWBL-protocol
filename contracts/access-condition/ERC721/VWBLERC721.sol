@@ -14,7 +14,7 @@ import "../AbstractVWBLToken.sol";
 /**
  * @dev NFT which is added Viewable features that only NFT Owner can view digital content
  */
-contract VWBLERC721 is Ownable, AbstractVWBLToken, ERC721URIStorage {
+contract VWBLERC721 is Ownable(msg.sender), AbstractVWBLToken, ERC721URIStorage {
     event NFTMinted(address sender, uint256 tokenId);
 
     constructor(

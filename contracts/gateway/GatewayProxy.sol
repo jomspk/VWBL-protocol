@@ -8,7 +8,7 @@ import "./IGatewayProxy.sol";
 /**
  * @dev return VWBL Gateway address.
  */
-contract GatewayProxy is Ownable, IGatewayProxy {
+contract GatewayProxy is Ownable(msg.sender), IGatewayProxy {
     address gatewayAddress;
     event gatewayContractChanged(address oldGatewayContract, address newGatewayContract);
 

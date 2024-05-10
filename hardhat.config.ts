@@ -2,8 +2,8 @@ import "hardhat-contract-sizer"
 import * as dotenv from "dotenv"
 import { HardhatUserConfig } from "hardhat/config"
 import "@nomicfoundation/hardhat-toolbox"
-import "@nomiclabs/hardhat-etherscan"
-import "@nomiclabs/hardhat-waffle"
+// import "@nomiclabs/hardhat-etherscan"
+// import "@nomiclabs/hardhat-waffle"
 import "@nomiclabs/hardhat-web3"
 import "@typechain/hardhat"
 import "hardhat-gas-reporter"
@@ -13,7 +13,7 @@ dotenv.config()
 
 const config: HardhatUserConfig = {
     solidity: {
-        version: "0.8.17",
+        version: "0.8.20",
         settings: {
             optimizer: {
                 enabled: true,
