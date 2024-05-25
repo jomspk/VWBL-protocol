@@ -29,17 +29,38 @@ contract VWBLERC721 is Ownable(msg.sender), AbstractVWBLToken, ERC721URIStorage 
      * @param _inputJson json data of diary NFT
      * @param _documentId The Identifier of digital content and decryption key
      */
-    function makeNFT(
-        string memory _getKeyUrl,
-        string memory _inputJson,
-        bytes32 _documentId
-    ) public payable onlyOwner returns (uint256) {
-        uint256 tokenId = ++counter;
+    // function mintDiary(
+    //     string memory _getKeyUrl,
+    //     string memory _inputJson,
+    //     bytes32 _documentId
+    // ) public payable onlyOwner returns (uint256) {
+    //     uint256 tokenId = ++counter;
 
-        TokenInfo memory tokenInfo = TokenInfo(_documentId, msg.sender, _getKeyUrl);
-        tokenIdToTokenInfo[tokenId] = tokenInfo;
+    //     TokenInfo memory tokenInfo = TokenInfo(_documentId, msg.sender, _getKeyUrl);
+    //     tokenIdToTokenInfo[tokenId] = tokenInfo;
 
+    //     //引数からそのままjsonデータを取得するようにする
+    //     string memory json = Base64.encode(bytes(_inputJson));
+
+    //     string memory finalTokenUri = string(abi.encodePacked("data:application/json;base64,", json));
+
+    //     _safeMint(msg.sender, tokenId);
+    //     _setTokenURI(tokenId, finalTokenUri);
+
+    //     emit NFTMinted(msg.sender, tokenId);
+    //     // grant access control to nft and pay vwbl fee and register nft data to access control checker contract
+    //     IAccessControlCheckerByNFT(accessCheckerContract).grantAccessControlAndRegisterNFT{value: msg.value}(
+    //         _documentId,
+    //         address(this),
+    //         tokenId
+    //     );
+
+    //     return tokenId;
+    // }
+
+    function mintNFT(uint256 tokenId, string memory _inputJson) private {
         //引数からそのままjsonデータを取得するようにする
+        //TODO: encodeした状態のjsonデータを引数として受け取った方がガス代節約できる。
         string memory json = Base64.encode(bytes(_inputJson));
 
         string memory finalTokenUri = string(abi.encodePacked("data:application/json;base64,", json));
@@ -48,13 +69,28 @@ contract VWBLERC721 is Ownable(msg.sender), AbstractVWBLToken, ERC721URIStorage 
         _setTokenURI(tokenId, finalTokenUri);
 
         emit NFTMinted(msg.sender, tokenId);
+    }
+
+    function mintInitialDiary(string memory _getKeyUrl,string memory _inputJson, bytes32 _documentId) public payable onlyOwner{
+        uint256 tokenId = ++counter;
+        tokenIdToMinter[tokenId] = msg.sender;
+        minterToDocumentId[msg.sender] = _documentId;
+
+        mintNFT(tokenId, _inputJson);
+
         // grant access control to nft and pay vwbl fee and register nft data to access control checker contract
         IAccessControlCheckerByNFT(accessCheckerContract).grantAccessControlAndRegisterNFT{value: msg.value}(
             _documentId,
             address(this),
             tokenId
         );
-
-        return tokenId;
     }
+
+    function mintAnotherDiary(string memory _getKeyUrl, string memory _inputJson, bytes32 _documentId) public onlyOwner{
+        uint256 tokenId = ++counter;
+        tokenIdToMinter[tokenId] = msg.sender;
+
+        mintNFT(tokenId, _inputJson);
+    }
+
 }

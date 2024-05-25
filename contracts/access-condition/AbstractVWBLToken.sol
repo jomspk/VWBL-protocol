@@ -14,19 +14,30 @@ abstract contract AbstractVWBLToken is AbstractVWBLSettings {
 
     mapping(uint256 => TokenInfo) public tokenIdToTokenInfo;
 
+    mapping(uint256 => address) public tokenIdToMinter;
+    mapping(address => bytes32) public minterToDocumentId;
+
     constructor(
         address _gatewayProxy,
         address _accessCheckerContract,
         string memory _signMessage
     ) AbstractVWBLSettings(_gatewayProxy, _accessCheckerContract, _signMessage) {}
 
-    /**
-     * @notice Get minter of NFT by tokenId
-     * @param tokenId The Identifier of NFT
-     */
     function getMinter(uint256 tokenId) public view returns (address) {
-        return tokenIdToTokenInfo[tokenId].minterAddress;
+        return tokenIdToMinter[tokenId];
     }
+    
+    function getDocumentId(address minter) public view returns (bytes32) {
+        return minterToDocumentId[minter];
+    }
+
+    // /**
+    //  * @notice Get minter of NFT by tokenId
+    //  * @param tokenId The Identifier of NFT
+    //  */
+    // function getMinter(uint256 tokenId) public view returns (address) {
+    //     return tokenIdToTokenInfo[tokenId].minterAddress;
+    // }
 
     /**
      * @notice Get token Info for each minter
@@ -35,14 +46,14 @@ abstract contract AbstractVWBLToken is AbstractVWBLSettings {
     function getTokenByMinter(address minter) public view returns (uint256[] memory) {
         uint256 resultCount = 0;
         for (uint256 i = 1; i <= counter; i++) {
-            if (tokenIdToTokenInfo[i].minterAddress == minter) {
+            if (tokenIdToMinter[i] == minter) {
                 resultCount++;
             }
         }
         uint256[] memory tokens = new uint256[](resultCount);
         uint256 currentCounter = 0;
         for (uint256 i = 1; i <= counter; i++) {
-            if (tokenIdToTokenInfo[i].minterAddress == minter) {
+            if (tokenIdToMinter[i] == minter) {
                 tokens[currentCounter++] = i;
             }
         }

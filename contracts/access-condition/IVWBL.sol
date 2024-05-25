@@ -43,4 +43,6 @@ interface IVWBL {
      * @param minter The minter of NFT
      */
     function getTokenByMinter(address minter) external view returns (uint256[] memory);
+
+    function getDocumentId(address minter) external view returns (bytes32);
 }

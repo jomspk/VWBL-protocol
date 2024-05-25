@@ -33,12 +33,15 @@ contract AccessControlCheckerByNFT is AbstractControlChecker, Ownable(msg.sender
 
     /**
      * @notice Get array of documentIds, NFT contract address, tokenId.
+     * TODO:何度も移し替えているので無駄な処理だと思う。変更した方がいい。
      */
     function getNFTDatas() public view returns (bytes32[] memory, Token[] memory) {
+        // 全てのdocumentIdをリストで持ってくる
         bytes32[] memory allDocumentIds = IVWBLGateway(getGatewayAddress()).getDocumentIds();
         bytes32[] memory tempDocumentIds = new bytes32[](allDocumentIds.length);
         Token[] memory tempTokens = new Token[](allDocumentIds.length);
         uint256 count;
+        // documentIdのリストをallDocumentIdsに移し替えている。tempDocumentIdsも同様。
         for (uint256 i = 0; i < allDocumentIds.length; i++) {
             if (documentIdToToken[allDocumentIds[i]].contractAddress != address(0)) {
                 count++;
@@ -47,6 +50,7 @@ contract AccessControlCheckerByNFT is AbstractControlChecker, Ownable(msg.sender
             }
         }
 
+        //tempDocumentIdsをdocumentIdsに移し替えている。tokensも同様
         bytes32[] memory documentIds = new bytes32[](count);
         Token[] memory tokens = new Token[](count);
         for (uint256 i = 0; i < count; i++) {
