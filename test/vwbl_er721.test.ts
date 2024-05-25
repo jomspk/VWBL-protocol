@@ -61,7 +61,7 @@ describe("Getter function", function () {
             // Diaryのmint
             const documentIdArray_1 = ethers.randomBytes(32)
             const documentId_1 = ethers.hexlify(documentIdArray_1)
-            await vwblNFT_1.connect(owner).mintInitialDiary(vwblNetworkUrl, inputJson, documentId_1, { value: feeWei })
+            await vwblNFT_1.connect(owner).mintInitialDiary(inputJson, documentId_1, { value: feeWei })
             // Initial diaryをmintした人が保有している権限を持っているか確認
             expect((await nftChecker.getOwnerAddress(documentId_1)) === owner.address).to.equal(true)
             // mintしていないアドレスがnftの権限を保有していないことを確認
@@ -84,7 +84,7 @@ describe("Getter function", function () {
             // 他のdocumentIdとアドレスでmint
             const documentIdArray_2 = ethers.randomBytes(32)
             const documentId_2 = ethers.hexlify(documentIdArray_2)
-            await vwblNFT_2.connect(owner).mintInitialDiary(vwblNetworkUrl, inputJson, documentId_2, { value: feeWei })
+            await vwblNFT_2.connect(owner).mintInitialDiary(inputJson, documentId_2, { value: feeWei })
             expect((await nftChecker.getOwnerAddress(documentId_2)) === owner.address).to.equal(true)
             expect((await nftChecker.getOwnerAddress(documentId_2)) === minter3.address).to.equal(false)
 
@@ -113,7 +113,7 @@ describe("Getter function", function () {
             const documentIdArray_4 = ethers.randomBytes(32)
             const documentId_4 = ethers.hexlify(documentIdArray_4)
             await expect(
-                vwblNFT_1.connect(minter1).mintInitialDiary(vwblNetworkUrl, inputJson, documentId_4, { value: feeWei }),
+                vwblNFT_1.connect(minter1).mintInitialDiary(inputJson, documentId_4, { value: feeWei }),
             ).to.be.revertedWithCustomError(vwblNFT_1, "OwnableUnauthorizedAccount")
             await expect(vwblNFT_1.connect(minter1).mintAnotherDiary(inputJson)).to.be.revertedWithCustomError(
                 vwblNFT_1,
@@ -121,7 +121,7 @@ describe("Getter function", function () {
             )
 
             // NFTのmint
-            await vwblNFT_1.connect(owner).mintInitialDiary(vwblNetworkUrl, inputJson, documentId_4, { value: feeWei })
+            await vwblNFT_1.connect(owner).mintInitialDiary(inputJson, documentId_4, { value: feeWei })
             // transfer
             const tokens_3 = await vwblNFT_1.getTokenByMinter(owner.address)
             await expect(
@@ -152,25 +152,13 @@ describe("Getter function", function () {
             const { vwblNFT_1, vwblNFT_2, nftChecker, owner } = await loadFixture(deployTokenFixture)
 
             // Mint
-            await vwblNFT_1
-                .connect(owner)
-                .mintInitialDiary(vwblNetworkUrl, inputJson, ethers.randomBytes(32), { value: feeWei })
-            await vwblNFT_1
-                .connect(owner)
-                .mintInitialDiary(vwblNetworkUrl, inputJson, ethers.randomBytes(32), { value: feeWei })
-            await vwblNFT_1
-                .connect(owner)
-                .mintInitialDiary(vwblNetworkUrl, inputJson, ethers.randomBytes(32), { value: feeWei })
+            await vwblNFT_1.connect(owner).mintInitialDiary(inputJson, ethers.randomBytes(32), { value: feeWei })
+            await vwblNFT_1.connect(owner).mintInitialDiary(inputJson, ethers.randomBytes(32), { value: feeWei })
+            await vwblNFT_1.connect(owner).mintInitialDiary(inputJson, ethers.randomBytes(32), { value: feeWei })
 
-            await vwblNFT_2
-                .connect(owner)
-                .mintInitialDiary(vwblNetworkUrl, inputJson, ethers.randomBytes(32), { value: feeWei })
-            await vwblNFT_2
-                .connect(owner)
-                .mintInitialDiary(vwblNetworkUrl, inputJson, ethers.randomBytes(32), { value: feeWei })
-            await vwblNFT_2
-                .connect(owner)
-                .mintInitialDiary(vwblNetworkUrl, inputJson, ethers.randomBytes(32), { value: feeWei })
+            await vwblNFT_2.connect(owner).mintInitialDiary(inputJson, ethers.randomBytes(32), { value: feeWei })
+            await vwblNFT_2.connect(owner).mintInitialDiary(inputJson, ethers.randomBytes(32), { value: feeWei })
+            await vwblNFT_2.connect(owner).mintInitialDiary(inputJson, ethers.randomBytes(32), { value: feeWei })
             // getNFTDatas
             // 別々のdocumentIdでNFTを6個作った時にちゃんとdocumentIdが6個登録されているかの確認
             const nftDatas = await nftChecker.getNFTDatas()
