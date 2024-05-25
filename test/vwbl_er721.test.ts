@@ -6,9 +6,13 @@ import { ethers } from "hardhat"
 const feeWei = ethers.parseEther("0.001")
 const vwblNetworkUrl = "http://xxx.yyy.com"
 
-const inputJson = '{"name": "hogehoge", "description": "hogehoge", "image": "hogehoge"}'
+// const inputJson = 0
+const testJson = '{"name": "hogehoge", "description": "hogehoge", "image": "hogehoge"}'
 const encodeJson =
     "data:application/json;base64,eyJuYW1lIjogImhvZ2Vob2dlIiwgImRlc2NyaXB0aW9uIjogImhvZ2Vob2dlIiwgImltYWdlIjogImhvZ2Vob2dlIn0="
+
+const encodedJson = btoa(testJson)
+const inputJson = "data:application/json;base64," + encodedJson
 
 describe("Getter function", function () {
     async function deployTokenFixture() {
@@ -97,7 +101,7 @@ describe("Getter function", function () {
             // Diaryのmint
             const documentIdArray_3 = ethers.randomBytes(32)
             const documentId_3 = ethers.hexlify(documentIdArray_3)
-            await vwblNFT_1.connect(owner).mintAnotherDiary(vwblNetworkUrl, inputJson, documentId_3)
+            await vwblNFT_1.connect(owner).mintAnotherDiary(inputJson)
             const tokens_1 = await vwblNFT_1.getTokenByMinter(owner.address)
             const tokenListLength = tokens_1.length
             expect((await vwblNFT_1.getMinter(tokens_1[tokenListLength - 1])) === owner.address).to.equal(true)
@@ -111,9 +115,10 @@ describe("Getter function", function () {
             await expect(
                 vwblNFT_1.connect(minter1).mintInitialDiary(vwblNetworkUrl, inputJson, documentId_4, { value: feeWei }),
             ).to.be.revertedWithCustomError(vwblNFT_1, "OwnableUnauthorizedAccount")
-            await expect(
-                vwblNFT_1.connect(minter1).mintAnotherDiary(vwblNetworkUrl, inputJson, documentId_4),
-            ).to.be.revertedWithCustomError(vwblNFT_1, "OwnableUnauthorizedAccount")
+            await expect(vwblNFT_1.connect(minter1).mintAnotherDiary(inputJson)).to.be.revertedWithCustomError(
+                vwblNFT_1,
+                "OwnableUnauthorizedAccount",
+            )
 
             // NFTのmint
             await vwblNFT_1.connect(owner).mintInitialDiary(vwblNetworkUrl, inputJson, documentId_4, { value: feeWei })

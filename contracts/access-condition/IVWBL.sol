@@ -33,16 +33,21 @@ interface IVWBL {
     function setAllowOrigins(string memory) external;
 
     /**
+     * @notice Get token Info for each minter
+     * @param minter The address of NFT Minter
+     */
+    function getTokenByMinter(address minter) external view returns (uint256[] memory);
+
+    /**
      * @notice Get minter of NFT by tokenId
      * @param tokenId The Identifier of NFT
      */
     function getMinter(uint256 tokenId) external view returns (address);
 
     /**
-     * @notice Get minter of NFT by tokenId
-     * @param minter The minter of NFT
+     * @notice Get documentId of NFT by minter
+     * @param minter The address of NFT Minter
      */
-    function getTokenByMinter(address minter) external view returns (uint256[] memory);
-
     function getDocumentId(address minter) external view returns (bytes32);
 }
+

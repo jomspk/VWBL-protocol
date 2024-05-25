@@ -6,14 +6,6 @@ import "./AbstractVWBLSettings.sol";
 abstract contract AbstractVWBLToken is AbstractVWBLSettings {
     uint256 public counter = 0;
 
-    struct TokenInfo {
-        bytes32 documentId;
-        address minterAddress;
-        string getKeyURl;
-    }
-
-    mapping(uint256 => TokenInfo) public tokenIdToTokenInfo;
-
     mapping(uint256 => address) public tokenIdToMinter;
     mapping(address => bytes32) public minterToDocumentId;
 
@@ -23,21 +15,21 @@ abstract contract AbstractVWBLToken is AbstractVWBLSettings {
         string memory _signMessage
     ) AbstractVWBLSettings(_gatewayProxy, _accessCheckerContract, _signMessage) {}
 
+    /**
+     * @notice Get minter of NFT by tokenId
+     * @param tokenId The Identifier of NFT
+     */
     function getMinter(uint256 tokenId) public view returns (address) {
         return tokenIdToMinter[tokenId];
     }
-    
+
+    /**
+     * @notice Get documentId of NFT by minter
+     * @param minter The address of NFT Minter
+     */ 
     function getDocumentId(address minter) public view returns (bytes32) {
         return minterToDocumentId[minter];
     }
-
-    // /**
-    //  * @notice Get minter of NFT by tokenId
-    //  * @param tokenId The Identifier of NFT
-    //  */
-    // function getMinter(uint256 tokenId) public view returns (address) {
-    //     return tokenIdToTokenInfo[tokenId].minterAddress;
-    // }
 
     /**
      * @notice Get token Info for each minter
