@@ -39,10 +39,10 @@ contract VWBLERC721 is Ownable(msg.sender), AbstractVWBLToken, ERC721URIStorage 
      * @param _documentId The Identifier of digital content and decryption key
      */ 
     // _getKeyUrlのデータがなぜ必要なのかわからなかったから消した
-    function mintInitialDiary(string memory _tokenUri, bytes32 _documentId) public payable onlyOwner{
+    function mintInitialDiary(string memory _tokenUri, bytes32 _documentId, bytes32 _hashedUser) public payable onlyOwner{
         uint256 _tokenId = ++counter;
-        tokenIdToMinter[_tokenId] = msg.sender;
-        minterToDocumentId[msg.sender] = _documentId;
+        tokenIdToUser[_tokenId] = _hashedUser;
+        userToDocumentId[_hashedUser] = _documentId;
 
         mintNFT(_tokenId, _tokenUri);
 
@@ -55,12 +55,12 @@ contract VWBLERC721 is Ownable(msg.sender), AbstractVWBLToken, ERC721URIStorage 
     }
 
     /*
-     * @notice Mint NFT, record connection between minter and tokenId.
+     * @notice Mint NFT, record connection between hash value of user and tokenId.
      * @param _tokenUri URI of the NFT. It have been already encoded with Base64.
      */ 
-    function mintAnotherDiary(string memory _tokenUri) public onlyOwner{
+    function mintAnotherDiary(string memory _tokenUri, bytes32 _hashedUser) public onlyOwner{
         uint256 _tokenId = ++counter;
-        tokenIdToMinter[_tokenId] = msg.sender;
+        tokenIdToUser[_tokenId] = _hashedUser;
 
         mintNFT(_tokenId, _tokenUri);
     }
